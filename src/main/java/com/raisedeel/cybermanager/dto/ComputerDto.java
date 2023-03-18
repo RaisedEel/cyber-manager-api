@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -37,8 +37,7 @@ public class ComputerDto {
   @NonNull
   @NotNull(message = "Revision date cannot be empty")
   @PastOrPresent(message = "Revision date must be in the present or the past")
-  private Date revision;
-
+  private LocalDate revision;
   @NonNull
   @NotBlank(message = "Serial cannot be blank")
   @Size(max = 60, message = "Serial cannot be bigger than 60 characters")

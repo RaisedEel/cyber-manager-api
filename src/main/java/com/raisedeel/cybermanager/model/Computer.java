@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -36,7 +36,7 @@ public class Computer {
 
   @NonNull
   @Column(name = "last_revision")
-  private Date revision;
+  private LocalDate revision;
 
   @NonNull
   @Column(name = "serial")

@@ -2,6 +2,7 @@ package com.raisedeel.cybermanager.web;
 
 import com.raisedeel.cybermanager.dto.ComputerDto;
 import com.raisedeel.cybermanager.service.ComputerService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class ComputerController {
   }
 
   @PostMapping("/new")
-  public ResponseEntity<ComputerDto> addComputerHandler(@RequestBody ComputerDto computerDto) {
+  public ResponseEntity<ComputerDto> addComputerHandler(@RequestBody @Valid ComputerDto computerDto) {
     return new ResponseEntity<>(
         computerService.addComputer(computerDto),
         HttpStatus.CREATED
@@ -41,7 +42,7 @@ public class ComputerController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ComputerDto> setComputerHandler(@PathVariable Long id, @RequestBody ComputerDto computerDto) {
+  public ResponseEntity<ComputerDto> setComputerHandler(@PathVariable Long id, @RequestBody @Valid ComputerDto computerDto) {
     return new ResponseEntity<>(
         computerService.setComputer(id, computerDto),
         HttpStatus.OK
