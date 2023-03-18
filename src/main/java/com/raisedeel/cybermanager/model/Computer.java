@@ -35,7 +35,7 @@ public class Computer {
   private int antiquity;
 
   @NonNull
-  @Column(name = "revision_date")
+  @Column(name = "last_revision")
   private Date revision;
 
   @NonNull

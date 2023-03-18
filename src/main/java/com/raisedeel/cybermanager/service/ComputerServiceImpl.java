@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @AllArgsConstructor
+@Service
 public class ComputerServiceImpl implements ComputerService {
   ComputerRepository computerRepository;
   ComputerMapper computerMapper;
