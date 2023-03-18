@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class ComputerDto {
-  private long id;
+  private Long id;
 
   @NonNull
   @NotBlank(message = "Name cannot be blank")

@@ -16,33 +16,33 @@ public class Computer {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private long id;
+  private Long id;
 
   @NonNull
-  @Column(name = "name")
+  @Column(name = "name", nullable = false)
   private String name;
 
   @NonNull
-  @Column(name = "price")
+  @Column(name = "price", nullable = false)
   private int price;
 
   @NonNull
-  @Column(name = "brand")
+  @Column(name = "brand", nullable = false)
   private String brand;
 
   @NonNull
-  @Column(name = "antiquity")
+  @Column(name = "antiquity", nullable = false)
   private int antiquity;
 
   @NonNull
-  @Column(name = "last_revision")
+  @Column(name = "last_revision", nullable = false)
   private LocalDate revision;
 
   @NonNull
-  @Column(name = "serial")
+  @Column(name = "serial", nullable = false)
   private String serial;
 
   @NonNull
-  @Column(name = "description")
+  @Column(name = "description", nullable = false)
   private String description;
 }
