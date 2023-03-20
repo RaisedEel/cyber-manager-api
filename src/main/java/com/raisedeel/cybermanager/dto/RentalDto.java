@@ -5,7 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +20,11 @@ public class RentalDto {
   private String name;
 
   @NonNull
+  @NotNull(message = "Rent date cannot be empty")
+  @PastOrPresent(message = "Rent date must be in the present or the past")
+  private LocalDate rentDate;
+
+  @NonNull
   @NotNull(message = "Price cannot be empty")
   @Min(value = 1, message = "Price cannot be smaller than $1")
   @Max(value = 100, message = "Price cannot be bigger than $100")
@@ -27,13 +33,9 @@ public class RentalDto {
   @NonNull
   @NotNull(message = "Start time for the rent cannot be empty")
   @PastOrPresent(message = "Start time for the rent must be in the present or the past")
-  private LocalTime startTime;
+  private Date startTime;
 
-  private LocalTime endTime;
-
-  @Max(value = 99, message = "Rented hours cannot be bigger than 99 hours")
-  @Min(value = 0, message = "Rented hours cannot be smaller than 0 hours")
-  private int rentedHours = 0;
+  private Date endTime;
 
   private int total;
 }
