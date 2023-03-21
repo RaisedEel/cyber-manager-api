@@ -12,7 +12,7 @@ public interface RentalService {
 
   List<RentalDto> getRentalsByDate(LocalDate rentDate);
 
-  RentalDto startRental(RentalDto rentalDto);
+  RentalDto startRental(Long computerId, RentalDto rentalDto);
 
   RentalDto setRental(Long id, RentalDto rentalDto);
 

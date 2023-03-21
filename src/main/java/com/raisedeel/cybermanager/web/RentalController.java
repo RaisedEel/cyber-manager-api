@@ -35,10 +35,10 @@ public class RentalController {
     );
   }
 
-  @PostMapping("/new")
-  public ResponseEntity<RentalDto> startRentalHandler(@RequestBody @Valid RentalDto rentalDto) {
+  @PostMapping("/new/{computerId}")
+  public ResponseEntity<RentalDto> startRentalHandler(@PathVariable Long computerId, @RequestBody @Valid RentalDto rentalDto) {
     return new ResponseEntity<>(
-        rentalService.startRental(rentalDto),
+        rentalService.startRental(computerId, rentalDto),
         HttpStatus.CREATED
     );
   }

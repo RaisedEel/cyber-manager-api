@@ -1,6 +1,9 @@
 package com.raisedeel.cybermanager.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -13,11 +16,6 @@ import java.util.Date;
 public class RentalDto {
 
   private Long id;
-
-  @NonNull
-  @NotBlank(message = "Name cannot be blank")
-  @Size(max = 60, message = "Name cannot be bigger than 60 characters")
-  private String name;
 
   @NonNull
   @NotNull(message = "Rent date cannot be empty")
@@ -38,4 +36,6 @@ public class RentalDto {
   private Date endTime;
 
   private int total;
+
+  private ComputerDto computerDto;
 }

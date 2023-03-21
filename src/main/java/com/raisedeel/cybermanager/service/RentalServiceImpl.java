@@ -2,7 +2,9 @@ package com.raisedeel.cybermanager.service;
 
 import com.raisedeel.cybermanager.dto.RentalDto;
 import com.raisedeel.cybermanager.dto.mapper.RentalMapper;
+import com.raisedeel.cybermanager.model.Computer;
 import com.raisedeel.cybermanager.model.Rental;
+import com.raisedeel.cybermanager.repository.ComputerRepository;
 import com.raisedeel.cybermanager.repository.RentalRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @AllArgsConstructor
 @Service
 public class RentalServiceImpl implements RentalService {
 
   RentalRepository rentalRepository;
+  ComputerRepository computerRepository;
   RentalMapper rentalMapper;
 
   @Override
@@ -30,21 +32,36 @@ public class RentalServiceImpl implements RentalService {
   }
 
   @Override
-  public RentalDto startRental(RentalDto rentalDto) {
-    Rental rental = rentalRepository.save(rentalMapper.rentalDtoToRental(rentalDto));
-    return rentalMapper.rentalToRentalDto(rental);
+  public RentalDto startRental(Long computerId, RentalDto rentalDto) {
+    Computer computer = computerRepository.findById(computerId)
+        .orElseThrow(() -> new RuntimeException("Could not find the requested computer"));
+    Rental rental = rentalMapper.rentalDtoToRental(rentalDto);
+    rental.setComputer(computer);
+    return rentalMapper.rentalToRentalDto(rentalRepository.save(rental));
   }
 
   @Override
   public RentalDto setRental(Long id, RentalDto rentalDto) {
     Rental rentalUpdated = rentalMapper.updateRentalFromDto(rentalDto, getRentalById(id));
+    if (rentalUpdated.getEndTime() != null) {
+      rentalUpdated.setTotal(calculateTotal(
+          rentalUpdated.getStartTime(),
+          rentalUpdated.getEndTime(),
+          rentalUpdated.getPrice()
+      ));
+    }
     return rentalMapper.rentalToRentalDto(rentalRepository.save(rentalUpdated));
   }
 
   @Override
   public RentalDto endRental(Long id, Date endTime) {
     Rental rental = getRentalById(id);
-    rental.setEndTime(Objects.requireNonNullElseGet(endTime, Date::new));
+    if (endTime == null || endTime.before(rental.getStartTime())) {
+      rental.setEndTime(new Date());
+    } else {
+      rental.setEndTime(endTime);
+    }
+
     rental.setTotal(calculateTotal(rental.getStartTime(), rental.getEndTime(), rental.getPrice()));
     return rentalMapper.rentalToRentalDto(rentalRepository.save(rental));
   }

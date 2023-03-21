@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class Computer {
   private Long id;
 
   @NonNull
-  @Column(name = "name", nullable = false)
+  @Column(name = "name", nullable = false, unique = true)
   private String name;
 
   @NonNull
@@ -45,4 +46,7 @@ public class Computer {
   @NonNull
   @Column(name = "description", nullable = false)
   private String description;
+
+  @OneToMany(mappedBy = "computer", cascade = CascadeType.ALL)
+  private List<Rental> rental;
 }

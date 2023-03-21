@@ -20,10 +20,6 @@ public class Rental {
   private Long id;
 
   @NonNull
-  @Column(name = "name", nullable = false)
-  private String name;
-
-  @NonNull
   @Column(name = "rent_date", nullable = false)
   private LocalDate rentDate;
 
@@ -37,7 +33,16 @@ public class Rental {
 
   @Column(name = "end_time")
   private Date endTime;
-  
+
   @Column(name = "total")
   private int total;
+
+  @ManyToOne(optional = false)
+  @JoinColumns(
+      value = {
+          @JoinColumn(name = "computer_id", referencedColumnName = "id"),
+          @JoinColumn(referencedColumnName = "name")
+      }
+  )
+  private Computer computer;
 }
