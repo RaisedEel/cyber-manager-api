@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -31,9 +31,9 @@ public class RentalDto {
   @NonNull
   @NotNull(message = "Start time for the rent cannot be empty")
   @PastOrPresent(message = "Start time for the rent must be in the present or the past")
-  private Date startTime;
+  private LocalDateTime startTime;
 
-  private Date endTime;
+  private LocalDateTime endTime;
 
   private int total;
 

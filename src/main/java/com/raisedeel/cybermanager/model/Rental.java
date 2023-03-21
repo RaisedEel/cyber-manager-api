@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -29,10 +29,10 @@ public class Rental {
 
   @NonNull
   @Column(name = "start_time", nullable = false)
-  private Date startTime;
+  private LocalDateTime startTime;
 
   @Column(name = "end_time")
-  private Date endTime;
+  private LocalDateTime endTime;
 
   @Column(name = "total")
   private int total;

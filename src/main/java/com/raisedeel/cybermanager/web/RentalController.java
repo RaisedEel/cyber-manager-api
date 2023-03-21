@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -52,7 +52,7 @@ public class RentalController {
   }
 
   @PutMapping("finish/{id}")
-  public ResponseEntity<RentalDto> endRentalHandler(@PathVariable Long id, @RequestParam(name = "time", required = false) Date endTime) {
+  public ResponseEntity<RentalDto> endRentalHandler(@PathVariable Long id, @RequestParam(name = "time", required = false) LocalDateTime endTime) {
     return new ResponseEntity<>(
         rentalService.endRental(id, endTime),
         HttpStatus.OK

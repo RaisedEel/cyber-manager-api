@@ -10,7 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @AllArgsConstructor
@@ -50,14 +51,15 @@ public class RentalServiceImpl implements RentalService {
           rentalUpdated.getPrice()
       ));
     }
+    
     return rentalMapper.rentalToRentalDto(rentalRepository.save(rentalUpdated));
   }
 
   @Override
-  public RentalDto endRental(Long id, Date endTime) {
+  public RentalDto endRental(Long id, LocalDateTime endTime) {
     Rental rental = getRentalById(id);
-    if (endTime == null || endTime.before(rental.getStartTime())) {
-      rental.setEndTime(new Date());
+    if (endTime == null || endTime.isBefore(rental.getStartTime())) {
+      rental.setEndTime(LocalDateTime.now());
     } else {
       rental.setEndTime(endTime);
     }
@@ -77,8 +79,8 @@ public class RentalServiceImpl implements RentalService {
         .orElseThrow(() -> new RuntimeException("Could not find the requested rental"));
   }
 
-  private int calculateTotal(Date initialTime, Date endTime, int price) {
-    long durationInMinutes = (long) Math.floor(1.0 * (endTime.getTime() - initialTime.getTime()) / 60000);
+  private int calculateTotal(LocalDateTime initialTime, LocalDateTime endTime, int price) {
+    long durationInMinutes = ChronoUnit.MINUTES.between(initialTime, endTime);
     int total = (int) Math.floor(1.0 * durationInMinutes / 60) * price;
 
     if (durationInMinutes % 60 >= 30) {
