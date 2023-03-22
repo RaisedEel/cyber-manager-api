@@ -2,6 +2,9 @@ package com.raisedeel.cybermanager.service;
 
 import com.raisedeel.cybermanager.dto.RentalDto;
 import com.raisedeel.cybermanager.dto.mapper.RentalMapper;
+import com.raisedeel.cybermanager.exception.ComputerNotFoundException;
+import com.raisedeel.cybermanager.exception.EndTimeBeforeStartTimeException;
+import com.raisedeel.cybermanager.exception.RentalNotFoundException;
 import com.raisedeel.cybermanager.model.Computer;
 import com.raisedeel.cybermanager.model.Rental;
 import com.raisedeel.cybermanager.repository.ComputerRepository;
@@ -35,7 +38,7 @@ public class RentalServiceImpl implements RentalService {
   @Override
   public RentalDto startRental(Long computerId, RentalDto rentalDto) {
     Computer computer = computerRepository.findById(computerId)
-        .orElseThrow(() -> new RuntimeException("Could not find the requested computer"));
+        .orElseThrow(() -> new ComputerNotFoundException(computerId));
     Rental rental = rentalMapper.rentalDtoToRental(rentalDto);
     rental.setComputer(computer);
     return rentalMapper.rentalToRentalDto(rentalRepository.save(rental));
@@ -51,15 +54,17 @@ public class RentalServiceImpl implements RentalService {
           rentalUpdated.getPrice()
       ));
     }
-    
+
     return rentalMapper.rentalToRentalDto(rentalRepository.save(rentalUpdated));
   }
 
   @Override
   public RentalDto endRental(Long id, LocalDateTime endTime) {
     Rental rental = getRentalById(id);
-    if (endTime == null || endTime.isBefore(rental.getStartTime())) {
+    if (endTime == null) {
       rental.setEndTime(LocalDateTime.now());
+    } else if (endTime.isBefore(rental.getStartTime())) {
+      throw new EndTimeBeforeStartTimeException(rental.getStartTime(), endTime);
     } else {
       rental.setEndTime(endTime);
     }
@@ -76,7 +81,7 @@ public class RentalServiceImpl implements RentalService {
   private Rental getRentalById(Long id) {
 
     return rentalRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Could not find the requested rental"));
+        .orElseThrow(() -> new RentalNotFoundException(id));
   }
 
   private int calculateTotal(LocalDateTime initialTime, LocalDateTime endTime, int price) {

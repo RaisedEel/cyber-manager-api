@@ -2,6 +2,7 @@ package com.raisedeel.cybermanager.service;
 
 import com.raisedeel.cybermanager.dto.ComputerDto;
 import com.raisedeel.cybermanager.dto.mapper.ComputerMapper;
+import com.raisedeel.cybermanager.exception.ComputerNotFoundException;
 import com.raisedeel.cybermanager.model.Computer;
 import com.raisedeel.cybermanager.repository.ComputerRepository;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,6 @@ public class ComputerServiceImpl implements ComputerService {
 
   private Computer getComputerById(Long id) {
     return computerRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Could not find the requested computer"));
+        .orElseThrow(() -> new ComputerNotFoundException(id));
   }
 }
